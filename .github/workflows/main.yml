@@ -48,7 +48,7 @@ jobs:
       with:
        images: danilocavazim/conversao-temperatura:${{ github.run_number }}
        manifests: |
-         k8s/deployment.yaml
+         src/k8s/deployment.yaml
          
        
      
