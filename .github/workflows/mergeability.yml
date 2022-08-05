@@ -1,0 +1,50 @@
+name: Mergeability
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  build:
+    name: Build & Tests Check
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: amannn/action-semantic-pull-request@v3.4.6
+        name: Check PR Semantic Title
+
+      - name: Setuping Node
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: 15
+
+      - name: NPM Cache
+        uses: c-hive/gha-npm-cache@v1.1.0
+
+      - name: Installing Dependencies
+        run: npm install
+      
+      - name: Trying eslit --fix
+        run: npm run lint:fix
+
+      - name: Test Build
+        run: npm run build
+
+      - name: Unit Tests
+        run: npm run test
+
+      - name: Test Lint
+        run: npm run lint
