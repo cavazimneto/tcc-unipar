@@ -25,8 +25,7 @@ jobs:
           node-version: 17
 
       - name: Install Deps
-        context: ./src
-        run: npm install
+        run: npm install ./src
 
       - name: Semantic Release
         run: npx semantic-release --ci
