@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "conversao-temperatura": "file:src"
+  }
+}
