@@ -22,9 +22,10 @@ jobs:
 
       - uses: actions/setup-node@v3
         with: 
-          node-version: 18
+          node-version: 17
 
       - name: Install Deps
+        context: ./src
         run: npm install
 
       - name: Semantic Release
