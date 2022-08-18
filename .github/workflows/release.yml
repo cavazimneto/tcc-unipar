@@ -1,35 +1,22 @@
-
-
 name: Release
-
-on:
+"on":
   push:
     branches:
-      - "main"
-      - "develop"
-  
+      - main
+      - develop
+      - "*.x"
 jobs:
   release:
-    runs-on: "ubuntu-latest"
-    env: 
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    name: release
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
       - uses: actions/setup-node@v3
-        with: 
-          node-version: 17
-
-      - name: Install Deps
-        run: npm install ./src
-
-      - name: Semantic Release
-        env: 
+        with:
+          cache: npm
+          node-version: 16
+      - run: npm ci
+      - run: npx semantic-release
+        env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release --ci
-        
+          NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_BOT_NPM_TOKEN }}
