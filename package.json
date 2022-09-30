@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "conversao-temperatura": "file:src"
-  },
-  "devDependencies": {
-    "semantic-release": "^19.0.3"
-  }
-}
