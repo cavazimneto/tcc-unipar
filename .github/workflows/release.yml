@@ -4,7 +4,6 @@ name: Release
     branches:
       - main
       - develop
-      - "*.x"
 jobs:
   release:
     name: release
