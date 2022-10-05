@@ -33,6 +33,7 @@ jobs:
     
     - name: Get Terraform Variables
       run:
+      shell: bash
       export TF_VAR_digitalocean_key= ${{ secrets.DIGITAL_OCEAN_TOKEN }}      
     
     - name: Terraform Init
