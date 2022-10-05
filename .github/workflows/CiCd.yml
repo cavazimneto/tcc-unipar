@@ -42,8 +42,9 @@ jobs:
     - name: Save DigitalOcean kubeconfig with short-lived credentials
       run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 unicluster
 
-    - name: Deploy to DigitalOcean Kubernetes
-      run: kubectl apply -f k8s/deployment.yaml
+     - name: Deploy app to Kubernetes
+        run: kubectl apply --prune --all -k kustomize/
+        working-directory: k8s/deployment.yaml
 
     - name: Verify deployment
       run: kubectl rollout status deployment/danilocavazim/tcc-unipar:latest
