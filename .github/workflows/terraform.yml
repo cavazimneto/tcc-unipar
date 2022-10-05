@@ -34,6 +34,9 @@ jobs:
     - name: Terraform Init
       run: terraform init
     
+    - name: Terraform Init
+      run: export DIGITALOCEAN_ACCESS_TOKEN= ${{ secrets.DIGITAL_OCEAN_TOKEN }}
+
     - name: Terraform Format
       run: terraform fmt -check
     
