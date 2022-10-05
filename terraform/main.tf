@@ -5,7 +5,7 @@ resource "digitalocean_kubernetes_cluster" "unicluster" {
 
   node_pool {
     name       = "autoscale-worker-pool"
-    size       = "s-1vcpu-1gb"
+    size       = "s-2vcpu-2gb"
     auto_scale = true
     min_nodes  = 1
     max_nodes  = 5
