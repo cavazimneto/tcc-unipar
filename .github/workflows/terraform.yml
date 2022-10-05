@@ -32,8 +32,7 @@ jobs:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
     
     - name: Get Terraform Variables
-      run:
-      env:
+      run: |
       TF_VAR_digitalocean_key= ${{ secrets.DIGITAL_OCEAN_TOKEN }}      
     
     - name: Terraform Init
