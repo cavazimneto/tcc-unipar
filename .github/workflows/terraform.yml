@@ -1,6 +1,10 @@
     name: 'Terraform'
     runs-on: ubuntu-latest
-
+    jobs:
+      terraform:
+        defaults:
+          run:
+          working-directory: ./terraform
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -9,7 +13,7 @@
       uses: hashicorp/setup-terraform@v1
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-      
+
     - name: Terraform Init
       run: terraform init
 
