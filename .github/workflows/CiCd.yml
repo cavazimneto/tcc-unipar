@@ -43,9 +43,9 @@ jobs:
       run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 unicluster
 
     - name: Deploy to DigitalOcean Kubernetes
-      run: kubectl apply ./k8s/deployment.yaml
+      run: kubectl apply -f k8s/deployment.yaml
 
     - name: Verify deployment
       run: kubectl rollout status deployment/danilocavazim/tcc-unipar:latest
        
-    ##
+   
