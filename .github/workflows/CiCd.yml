@@ -34,10 +34,18 @@ jobs:
    runs-on: ubuntu-latest
    
    steps:
-       
-    - name: Deploy to Kubernetes cluster
-      uses: digitalocean/action-doctl@master
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
       with:
-       images: danilocavazim/tcc-unipar:${{ github.run_number }}
-       manifests: |
-         k8s/deployment.yaml
+        token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
+
+    - name: Save DigitalOcean kubeconfig with short-lived credentials
+      run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 unicluster
+
+    - name: Deploy to DigitalOcean Kubernetes
+      run: kubectl apply -f $GITHUB_WORKSPACE/k8s/deployment.yml
+
+    - name: Verify deployment
+      run: kubectl rollout status deployment/danilocavazim/tcc-unipar:latest
+       
+    
