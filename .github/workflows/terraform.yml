@@ -26,9 +26,6 @@ jobs:
       with:
         token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
 
-    - name: Save DigitalOcean kubeconfig
-      run: doctl kubernetes cluster kubeconfig save testing-cluster
-
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
