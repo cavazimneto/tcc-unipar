@@ -21,6 +21,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     
+    - name: Install DigitalOcean CLI
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
