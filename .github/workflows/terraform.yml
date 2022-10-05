@@ -26,6 +26,9 @@ jobs:
       with:
         token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
 
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save testing-cluster
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
@@ -33,10 +36,7 @@ jobs:
     
     - name: Terraform Init
       run: terraform init
-    
-    - name: Terraform Init
-      run: export DIGITALOCEAN_ACCESS_TOKEN= ${{ secrets.DIGITAL_OCEAN_TOKEN }}
-
+      
     - name: Terraform Format
       run: terraform fmt -check
     
