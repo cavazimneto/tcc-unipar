@@ -1,5 +1,5 @@
-resource "digitalocean_kubernetes_cluster" "UniCluster" {
-  name    = "UniCluster"
+resource "digitalocean_kubernetes_cluster" "unicluster" {
+  name    = "unicluster"
   region  = "nyc1"
   version = "1.24.4-do.0"
 
