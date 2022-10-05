@@ -1,3 +1,3 @@
-variable "digitalocean_key" {
+variable "do_token" {
   type = string
 }
