@@ -14,11 +14,6 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v2
 
-      - name: Update SHA
-        run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/app/_meta
-
       - name: Buld Docker Image
         run: docker build -t registry.digitalocean.com/unitcc/tcc-unipar:$(echo $GITHUB_SHA | head c7) .
-        
-
   
