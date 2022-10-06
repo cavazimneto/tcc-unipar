@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: danilocavazim/tcc-unipar:latest
+        image: <IMAGE>
         ports:
           - containerPort: 80
 
