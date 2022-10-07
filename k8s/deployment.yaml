@@ -1,35 +1,54 @@
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
-  name: meudeployment
+  name: digital-ocean-deploy
+  labels:
+    app: digital-ocean-deploy
+
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: web
+      app: digital-ocean-deploy
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
   template:
     metadata:
-      labels:  
-        app: web   
+      labels:
+        app: digital-ocean-deploy
     spec:
       containers:
-      - name: web
+      - name: test-deploy-container
         image: <IMAGE>
+        securityContext:
+          privileged: true
         ports:
-          - containerPort: 80
-
----   
-
+        - name: http
+          containerPort: 80
+          hostPort: 80
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            cpu: 100m
+---
 apiVersion: v1
-kind: Service 
-metadata: 
-  name: web
+kind: Service
+metadata:
+  name: digital-ocean-deploy
+  labels:
+    app: digital-ocean-deploy
 spec:
-  selector:   
-    app: web
+  type: LoadBalancer
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
       targetPort: 8080
       nodePort: 30000
-  type: LoadBalancer
+  selector:
+    app: digital-ocean-deploy
