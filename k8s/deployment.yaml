@@ -1,11 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
   name: digital-ocean-deploy
   labels:
     app: digital-ocean-deploy
+
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: digital-ocean-deploy
@@ -33,6 +35,8 @@ spec:
             cpu: 100m
           limits:
             cpu: 100m
+        imagePullSecrets:
+        - name: do_registry
 
 ---
 
