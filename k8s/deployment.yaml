@@ -1,11 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
-
 metadata:
   name: digital-ocean-deploy
   labels:
     app: digital-ocean-deploy
-
 spec:
   replicas: 1
   selector:
@@ -35,7 +33,9 @@ spec:
             cpu: 100m
           limits:
             cpu: 100m
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -49,6 +49,5 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 8080
-
   selector:
     app: digital-ocean-deploy
