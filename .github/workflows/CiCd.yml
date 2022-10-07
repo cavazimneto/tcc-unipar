@@ -37,6 +37,9 @@ jobs:
       - name: Save Config Cluster
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 unicluster
 
+      - name: Open permissions cluster
+        run: doctl kubernetes cluster registry add <89c513b6-0cfe-45ea-ac81-0500a1b0c6a3|unicluster>
+
       - name: Deploy
         run: kubectl apply -f $GITHUB_WORKSPACE/k8s/deployment.yaml
 
