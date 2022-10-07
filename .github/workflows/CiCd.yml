@@ -32,8 +32,8 @@ jobs:
         run: docker push registry.digitalocean.com/unitcc/tcc-unipar:$(echo $GITHUB_SHA | head -c7)
 
       - name: Update Deploy File
-        run: TAG=$(echo $GUTHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/unitcc/tcc-unipar'${TAG}'|' $GITHUB_WORKSPACE/k8s/deployment.yaml
-
+        run: TAG=$(echo $GUTHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/unitcc/tcc-unipar:'${TAG}'|' $GITHUB_WORKSPACE/k8s/deployment.yaml
+            
       - name: Save Config Cluster
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 unicluster
 
@@ -41,5 +41,5 @@ jobs:
         run: kubectl apply -f $GITHUB_WORKSPACE/k8s/deployment.yaml
 
       - name: Verify Deploy 
-        run: kubectl rollout status deployment/meudeployment
+        run: kubectl rollout status deployment/digital-ocean-deploy
         
