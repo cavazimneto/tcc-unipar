@@ -20,7 +20,7 @@ spec:
         app: digital-ocean-deploy
     spec:
       containers:
-      - name: test-deploy-container
+      - name: unitcc
         image: <IMAGE>
         securityContext:
           privileged: true
