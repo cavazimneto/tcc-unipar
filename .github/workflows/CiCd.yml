@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout main
+      uses: actions/checkout@v2
+      
     - name: Update SHA
       run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/k8s/_meta
 
@@ -28,8 +31,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout main
-        uses: actions/checkout@v2
   
       - name: Buld Docker Image
         run: docker build -t registry.digitalocean.com/unitcc/digital-ocean-deploy:$(echo $GITHUB_SHA | head -c7) .
