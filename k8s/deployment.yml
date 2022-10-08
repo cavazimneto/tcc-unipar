@@ -51,6 +51,5 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 5000
-      nodePort: 30000
   selector:
     app: digital-ocean-deploy
