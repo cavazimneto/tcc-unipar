@@ -24,6 +24,12 @@ jobs:
 
     - name: Login Docker
       run: doctl registry login --expiry-seconds 600
+
+    - name: Buld Docker Image
+      run: docker build -t registry.digitalocean.com/unitcc/digital-ocean-deploy:$(echo $GITHUB_SHA | head -c7) .
+
+    - name: Push image
+      run: docker push registry.digitalocean.com/unitcc/digital-ocean-deploy:$(echo $GITHUB_SHA | head -c7)  
   
   CD:
     needs: [CI]  
@@ -33,12 +39,14 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v2
-  
-      - name: Buld Docker Image
-        run: docker build -t registry.digitalocean.com/unitcc/digital-ocean-deploy:$(echo $GITHUB_SHA | head -c7) .
 
-      - name: Push image
-        run: docker push registry.digitalocean.com/unitcc/digital-ocean-deploy:$(echo $GITHUB_SHA | head -c7)
+      - name: Install doctl 
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
+
+      - name: Login Docker
+        run: doctl registry login --expiry-seconds 600  
 
       - name: Update Deploy File
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/unitcc/digital-ocean-deploy:'${TAG}'|' $GITHUB_WORKSPACE/k8s/deployment.yml
