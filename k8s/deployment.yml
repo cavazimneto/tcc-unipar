@@ -23,10 +23,10 @@ spec:
 apiVersion: v1
 kind: Service 
 metadata: 
-  name: web
+  name: digital-ocean-deploy 
 spec:
   selector:   
-    app: web
+    app: digital-ocean-deploy
   ports:
     - protocol: TCP
       port: 80
