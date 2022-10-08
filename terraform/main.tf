@@ -11,3 +11,13 @@ resource "digitalocean_kubernetes_cluster" "unicluster" {
     max_nodes  = 5
   }
 }
+
+terraform {
+  cloud {
+    organization = "dcavazim"
+
+    workspaces {
+      name = "example-workspace"
+    }
+  }
+}
