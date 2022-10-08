@@ -1,8 +1,9 @@
-name: Teste do Código
+name: Teste código NodeJs
 
 on:
   push:
-    branches: [ main ]
+    branches: 
+    - main
 
 jobs:
   build:
@@ -25,8 +26,7 @@ jobs:
 
 ---
 
-name: Deploy na DigitalOcean 
-needs: Teste do Código
+name: Deploy DigitalOcean 
 
 on:
   push:
@@ -34,6 +34,7 @@ on:
     - main 
   
 jobs:
+  needs: Teste código NodeJs 
   build:  
     name: Build and deploy   
     runs-on: ubuntu-latest
