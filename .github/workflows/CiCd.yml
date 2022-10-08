@@ -10,18 +10,17 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [15]
-
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
+    - name: Update SHA
+      run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/k8s/_meta
+
+    - name: Install doctl 
+      uses: digitalocean/action-doctl@v2
       with:
-        node-version: '14'
-        cache: 'npm'
-    - run: npm install
-    - run: npm test
+          token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
+
+    - name: Login Docker
+      run: doctl registry login --expiry-seconds 600
   
   CD:
     needs: [CI]  
@@ -31,20 +30,9 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v2
-      
-      - name: Update SHA
-        run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/k8s/_meta
-
+  
       - name: Buld Docker Image
         run: docker build -t registry.digitalocean.com/unitcc/digital-ocean-deploy:$(echo $GITHUB_SHA | head -c7) .
-
-      - name: Install doctl 
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
-
-      - name: Login Docker
-        run: doctl registry login --expiry-seconds 600
 
       - name: Push image
         run: docker push registry.digitalocean.com/unitcc/digital-ocean-deploy:$(echo $GITHUB_SHA | head -c7)
