@@ -18,7 +18,7 @@ jobs:
         run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/k8s/_meta
 
       - name: Buld Docker Image
-        run: docker build -t registry.digitalocean.com//unitcc/digital-ocean-deploy:$(echo $GITHUB_SHA | head -c7) .
+        run: docker build -t registry.digitalocean.com/unitcc/digital-ocean-deploy:$(echo $GITHUB_SHA | head -c7) .
 
       - name: Install doctl 
         uses: digitalocean/action-doctl@v2
