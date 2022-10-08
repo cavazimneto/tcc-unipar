@@ -33,7 +33,7 @@ jobs:
   
   CD:
     needs: [CI]  
-    name: Build and deploy   
+    name: CD  
     runs-on: ubuntu-latest
 
     steps:
