@@ -27,11 +27,6 @@ jobs:
 ---
 
 name: Deploy DigitalOcean 
-
-on:
-  push:
-    branches: 
-    - main 
   
 jobs:
   needs: Teste código NodeJs 
