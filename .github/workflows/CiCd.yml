@@ -7,56 +7,70 @@ on:
 
 jobs:
   CI:
-
+    # Declara qual sistema operacional ira executar o ambiente da pipeline. 
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout main
+    # Acao para verificar um repositório.
+    - name: Checkout main                                       
       uses: actions/checkout@v2
 
+    # Atualiza variaveis de ambiente
     - name: Update SHA
       run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/k8s/_meta
 
+    # Instala o aplicativo na execucao
     - name: Install doctl 
       uses: digitalocean/action-doctl@v2
       with:
           token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
 
+    # Faz o Login no repositório de imagens da DigitalOcean
     - name: Login Docker
       run: doctl registry login --expiry-seconds 600
 
+    # Constroi o container docker
     - name: Buld Docker Image
       run: docker build -t registry.digitalocean.com/unitcc/digital-ocean-deploy:$(echo $GITHUB_SHA | head -c7) .
 
+    # Exporta a imagem para o repostório da DigitalOcean
     - name: Push image
       run: docker push registry.digitalocean.com/unitcc/digital-ocean-deploy:$(echo $GITHUB_SHA | head -c7)  
   
   CD:
-    needs: [CI]  
+    needs: [CI]   # Esse bloco só será executado após a passo de CI ser finalizado. 
     name: CD  
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Declara qual sistema operacional ira executar o ambiente da pipeline.
 
     steps:
+
+      # Acao para verificar um repositório.
       - name: Checkout main
         uses: actions/checkout@v2
 
+      # Instala o aplicativo na execucao
       - name: Install doctl 
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
 
+      # Faz o Login no repositório de imagens da DigitalOcean
       - name: Login Docker
         run: doctl registry login --expiry-seconds 600  
 
+      # Atualiza a tag que identificará a imagem a ser implantada
       - name: Update Deploy File
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/unitcc/digital-ocean-deploy:'${TAG}'|' $GITHUB_WORKSPACE/k8s/deployment.yml
-             
+
+      # Salva as configuracoes do cluster
       - name: Save Config Cluster
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 unicluster
 
+      # Faz a Implantação da configuração contida no arquivo deploymen.yml 
       - name: Deploy
         run: kubectl apply -f $GITHUB_WORKSPACE/k8s/deployment.yml
 
+      # Verifica se a implantação rodou com sucesso
       - name: Verify Deploy 
         run: kubectl rollout status deployment/digital-ocean-deploy
         

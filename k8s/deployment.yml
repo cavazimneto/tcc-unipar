@@ -1,9 +1,9 @@
-apiVersion: apps/v1
+apiVersion: apps/v1                       
 kind: Deployment
 metadata:
-  name: meudeployment
+  name: meudeployment                  # Nome da aplicacao
 spec:
-  replicas: 2
+  replicas: 2                          # Define a quantidade de réplicas de pod a serem utilizadas.
   selector:
     matchLabels:
       app: digital-ocean-deploy 
@@ -14,13 +14,13 @@ spec:
     spec:
       containers:
       - name: unitcc
-        image: <IMAGE>
+        image: <IMAGE>                  # Especifica o nome da imagem a ser montada.
         ports:
-          - containerPort: 80
+          - containerPort: 80           # Especifica a porta de exposicao de pods. 
 
 ---   
 
-apiVersion: v1
+apiVersion: v1                          # Configuracoes de rede.
 kind: Service 
 metadata: 
   name: digital-ocean-deploy 
@@ -29,7 +29,7 @@ spec:
     app: digital-ocean-deploy
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 8080
-      nodePort: 30004
-  type: LoadBalancer
+      port: 80                          # Porta de acesso a aplicacao
+      targetPort: 8080                  # Porta de encaminhamento
+      nodePort: 30004                   # Porta da aplicacao
+  type: LoadBalancer                    # Define a entrada como balanceador de carga
